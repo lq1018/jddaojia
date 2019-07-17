@@ -47,4 +47,9 @@ export default {
   -webkit-transition: width 2s;
   -o-transition: width 2s;
 }
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+  color: transparent;
+}
 </style>

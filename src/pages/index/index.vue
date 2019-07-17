@@ -6,10 +6,31 @@
     <span><img :src="imgSrc2" class="img2"></span>
   </div>
   <div class="search">
+    <a href="/pages/search/main">
     <div class="searchInp">
-      <span><img src="" alt="">搜索附近的商家商品</span>
+      <span><img :src="imgSrc3" alt="">搜索附近的商家商品</span>
     </div>
+    </a>
   </div>
+    <scroll-view scroll-x="true" class="scroll-view_H first-scroll"  style="white-space: nowrap; width: 100%;display: flex;">
+      <div class="scroll-view-item_H">
+        <ul>
+          <li v-for="(item,index) in goodsItem" :key="index">
+            <img :src="item.imgSrc" alt="">
+            <span>{{item.name}}</span>
+          </li>
+        </ul>
+      </div>
+      <div class="scroll-view-item_H">
+        <ul>
+          <li>
+            <img src="/static/images/market.png" alt="">
+            <span>超值拼团</span>
+          </li>
+        </ul>
+      </div>
+    </scroll-view>
+
 </div>
 
 </template>
@@ -20,12 +41,54 @@ export default {
     return {
       location: '选择你的位置',
       imgSrc1: '/static/images/location.png',
-      imgSrc2: '/static/images/triangle.png'
+      imgSrc2: '/static/images/triangle.png',
+      imgSrc3: '/static/images/search.png',
+      goodsItem: [
+        {
+          imgSrc: '/static/images/market.png',
+          name: '超市便利'
+        },
+        {
+          imgSrc: '/static/images/market.png',
+          name: '超市便利'
+        },
+        {
+          imgSrc: '/static/images/market.png',
+          name: '超市便利'
+        },
+        {
+          imgSrc: '/static/images/market.png',
+          name: '超市便利'
+        },
+        {
+          imgSrc: '/static/images/market.png',
+          name: '超市便利'
+        },
+        {
+          imgSrc: '/static/images/market.png',
+          name: '超市便利'
+        },
+        {
+          imgSrc: '/static/images/market.png',
+          name: '超市便利'
+        },
+        {
+          imgSrc: '/static/images/market.png',
+          name: '超市便利'
+        },
+        {
+          imgSrc: '/static/images/market.png',
+          name: '超市便利'
+        },
+        {
+          imgSrc: '/static/images/market.png',
+          name: '超市便利'
+        }]
     }
   },
   created () {
     // let app = getApp()
-    this.getLocation()
+    // this.getLocation()
   },
   components: {
   },
@@ -34,7 +97,6 @@ export default {
       let _this = this
       wx.chooseLocation({
         success: function (res) {
-          console.log(res)
           _this.location = res.name
         }
       })
@@ -63,15 +125,53 @@ export default {
   background-color: #5cb154;
 }
   .search .searchInp{
-    line-height: 40px;
-    border-radius: 25px;
+    line-height: 35px;
+    border-radius: 20px;
     text-align: center;
     margin: 0 auto;
     background-color: #ffffff;
   }
+  .searchInp span{
+    color: #aaaaaa;
+    font-size: 14px;
+  }
   .searchInp img{
     width: 20px;
     height: 20px;
+    vertical-align: text-bottom;
+    margin-right: 5px;
   }
+
+.scroll-view-item_H{
+    display: inline-block;
+    background-color: #ffffff;
+  }
+  .scroll-view-item_H.first-scroll{
+    width: 100%;
+  }
+  .scroll-view-item_H ul{
+    display: flex;
+    padding: 10px 20px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+  }
+  .scroll-view-item_H ul li{
+    width:20%;
+    line-height:40px;
+    margin-bottom: 7px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+.scroll-view-item_H ul li img{
+  width: 32px;
+  height: 32px;
+}
+  .scroll-view-item_H ul li span{
+    font-size: 12px;
+  }
+
 
 </style>
