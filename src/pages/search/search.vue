@@ -69,6 +69,10 @@
         ]
       }
     },
+    // 挂载之前执行
+    beforeMount () {
+      this.searchVal = ''
+    },
     computed: {
       historyItem () {
         return store.state.historyItem
@@ -91,12 +95,15 @@
           }
         })
       },
+      //  将搜索记录加入到列表中
       addHistoryItem: function (val) {
+        this.currentList = []
         if (val) {
           this.searchVal = val
           store.commit('addHistoryItem', val)
         }
       },
+      //  清除所有搜索历史记录
       clearAllHistory: function () {
         store.commit('clearAllHistory')
       }
