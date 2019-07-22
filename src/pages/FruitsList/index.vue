@@ -1,31 +1,28 @@
 <template>
-  <div>
-    <merchant-list
-         :merchant-list="merchantList"
-          v-for='(item,index) in merchantList'
-          :item="item"
-          :key="index"
-           />
-  </div>
+    <div class="wrap">
+      <merchant-list
+       :merchant-list="fruitsList"
+       v-for="(item,index) in fruitsList"
+        :item="item"
+         :key="index"/>
+    </div>
 </template>
+
 <script>
   import merchantList from '../../components/MerchantList'
   export default {
-    name: 'index',
-    components: {
-      merchantList
-    },
+    components: {merchantList},
     data () {
       return {
-        merchantList: [
+        fruitsList: [
           {
             name: '沃尔玛-鼓山店',
             logoSrc: '/static/images/walmart.png',
             sales: 999,
-            sendPrice: 0,
+            sendPrice: 18,
             basisPrice: 6,
-            time: '50分钟',
-            distance: '2.5km',
+            time: '45分钟',
+            distance: '2.3km',
             deliveryName: '达达专送',
             id: 0,
             discountsList: [
@@ -64,8 +61,8 @@
             ]
           },
           {
-            name: '沃尔玛-鼓山店',
-            logoSrc: '/static/images/walmart.png',
+            name: '永辉到家-鼓山店',
+            logoSrc: '/static/images/yh.png',
             sales: 459,
             sendPrice: 18,
             basisPrice: 3,
@@ -88,22 +85,17 @@
                 name: '满减',
                 title: '欧莱雅满88减38，满176减76，满264减114',
                 type: 'mj'
-              },
-              {
-                name: '满减',
-                title: '统一饮料满9减2，满19减4',
-                type: 'mj'
               }
             ],
             nearStore: [
               {
-                name: '沃尔玛-长城分店',
+                name: '永辉-长城分店',
                 time: '55分钟',
                 distance: '2.5km'
               }
-
             ]
-          }]
+          }
+        ]
       }
     }
   }

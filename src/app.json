@@ -1,12 +1,12 @@
 {
   "pages": [
-    "pages/MerchantList/main",
+
     "pages/index/main",
+    "pages/MerchantList/main",
     "pages/search/main",
     "pages/logs/main",
-    "pages/counter/main",
     "pages/mycount/main",
-    "pages/balance/main"
+    "pages/FruitsList/main"
 
   ],
   "window": {

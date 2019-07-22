@@ -15,7 +15,7 @@
     <scroll-view scroll-x="true" class="scroll-view_H first-scroll"  style="white-space: nowrap; width: 100%;display: flex;">
       <div class="scroll-view-item_H">
         <ul>
-          <li v-for="(item,index) in goodsItem" @click="nextPage" :key="index">
+          <li v-for="(item,index) in goodsItem" @click="nextPage(index)" :key="index">
             <img :src="item.imgSrc" alt="">
             <span>{{item.name}}</span>
           </li>
@@ -49,40 +49,40 @@ export default {
           name: '超市便利'
         },
         {
-          imgSrc: '/static/images/market.png',
-          name: '超市便利'
+          imgSrc: '/static/images/fruit.png',
+          name: '新鲜果蔬'
+        },
+        {
+          imgSrc: '/static/images/cake.png',
+          name: '烘焙蛋糕'
+        },
+        {
+          imgSrc: '/static/images/flower.png',
+          name: '鲜花绿植'
+        },
+        {
+          imgSrc: '/static/images/health.png',
+          name: '医药健康'
         },
         {
           imgSrc: '/static/images/market.png',
-          name: '超市便利'
+          name: '家居时尚'
+        },
+        {
+          imgSrc: '/static/images/dada.png',
+          name: '达达专送'
         },
         {
           imgSrc: '/static/images/market.png',
-          name: '超市便利'
+          name: '0元抽奖'
         },
         {
           imgSrc: '/static/images/market.png',
-          name: '超市便利'
+          name: '签到'
         },
         {
           imgSrc: '/static/images/market.png',
-          name: '超市便利'
-        },
-        {
-          imgSrc: '/static/images/market.png',
-          name: '超市便利'
-        },
-        {
-          imgSrc: '/static/images/market.png',
-          name: '超市便利'
-        },
-        {
-          imgSrc: '/static/images/market.png',
-          name: '超市便利'
-        },
-        {
-          imgSrc: '/static/images/market.png',
-          name: '超市便利'
+          name: '邀请有礼'
         }]
     }
   },
@@ -101,10 +101,11 @@ export default {
         }
       })
     },
-    nextPage () {
+    nextPage (index) {
       wx.navigateTo({
-        url: '/pages/MerchantList/main',
+        url: '/pages/FruitsList/main?key=' + index,
         success (res) {
+          console.log(index)
         }
       })
     } }}

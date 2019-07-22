@@ -1,39 +1,39 @@
 <template>
-    <div class="merchant">
+    <div class="merchant" >
       <div class="content">
         <div class="left">
-          <img :src="merchantList.logoSrc">
+          <img :src="item.logoSrc">
         </div>
         <div class="right">
           <div class="top">
             <div class="merchantName">
-              {{merchantList.name}}
+              {{item.name}}
             </div>
             <div class="sales">
-              <div class="sales-left">月售{{merchantList.sales}}</div>
-              <div class="sales-right">{{merchantList.time}} | {{merchantList.distance}}</div>
+              <div class="sales-left">月售{{item.sales}}</div>
+              <div class="sales-right">{{item.time}} | {{item.distance}}</div>
             </div>
             <div class="delivery">
-              <div class="deli-left">{{merchantList.sendPrice}}元起送 | 基础运费{{merchantList.basisPrice}}元起</div>
-              <div class="deli-right">{{merchantList.deliveryName}}</div>
+              <div class="deli-left">{{item.sendPrice}}元起送 | 基础运费{{item.basisPrice}}元起</div>
+              <div class="deli-right">{{item.deliveryName}}</div>
             </div>
           </div>
-          <div class="center" v-if="discountList">
+          <div class="center" v-if="item.discountsList">
             <ul class="discounts">
-              <li  v-for="(discounts,index1) in discountList" :key="index1" v-if="index1 < num">
+              <li  v-for="(discounts,index1) in item.discountsList" :key="index1" v-if="index1 < num">
                 <span :class="[discounts.type]">{{discounts.name}}</span>
                 {{discounts.title}}
               </li>
             </ul>
-            <span :class="[num > 2 ? 'up' : 'down','direction']" v-if="discountList.length > 2" @click="showList"><img src="/static/images/down.png" alt=""></span>
+            <span :class="[num > 2 ? 'up' : 'down','direction']" v-if="item.discountsList.length > 2" @click="showList(item.id)"><img src="/static/images/down.png" alt=""></span>
           </div>
-          <div class="bottom" v-if="nearStore">
+          <div class="bottom" v-if="item.nearStore">
             <ul class="near">
               <div class="icon-store">
-                <span><img src="/static/images/store.png" alt="">附近还有{{nearStore.length}}家</span>
-                <span :class="[num1 > 1 ? 'up' : 'down','direction']" v-if="nearStore.length >= 2" @click="storeList"><img src="/static/images/down.png"></span>
+                <span><img src="/static/images/store.png" alt="">附近还有{{item.nearStore.length}}家</span>
+                <span :class="[ num1 > 1 ? 'up' : 'down','direction']" v-if="item.nearStore.length >= 2" @click="storeList(item.id)"><img src="/static/images/down.png"></span>
               </div>
-              <li class="nearStore" v-if="num1 >= nearStore.length" v-for="(store,index2) in nearStore" :key="index2">
+              <li class="nearStore" v-if="num1 >= item.nearStore.length" v-for="(store,index2) in item.nearStore" :key="index2">
                 <div class="storeName">{{store.name}}</div>
                 <div class="storeDistance">{{store.time}} | {{store.distance}}</div>
               </li>
@@ -46,113 +46,25 @@
 
 <script>
   export default {
-    props: ['merchantList', 'discountList', 'nearStore'],
-    beforeMount () {
-      this.num = 2
-      this.num1 = 1
-    },
+    props: ['merchantList', 'item'],
     data () {
       return {
         num: 2,
         num1: 1
-        // merchantList: [
-        //   {
-        //     name: '沃尔玛-鼓山店',
-        //     logoSrc: '/static/images/walmart.png',
-        //     sales: 999,
-        //     sendPrice: 0,
-        //     basisPrice: 6,
-        //     time: '50分钟',
-        //     distance: '2.5km',
-        //     deliveryName: '达达专送',
-        //     id: 0,
-        //     discountsList: [
-        //       {
-        //         name: '红包',
-        //         title: '兑5元红包',
-        //         type: 'hb'
-        //       },
-        //       {
-        //         name: '领券',
-        //         title: '免5元运费，满5元免5元运费，满48元免4元运费,认识我那个分解机积分IE见覅偶',
-        //         type: 'lq'
-        //       },
-        //       {
-        //         name: '返券',
-        //         title: '实付满89元订单完成后返20元优惠券(每天1单)',
-        //         type: 'fq'
-        //       },
-        //       {
-        //         name: '满减',
-        //         title: '欧莱雅满88减38，满176减76，满264减114',
-        //         type: 'mj'
-        //       }
-        //     ],
-        //     nearStore: [
-        //       {
-        //         name: '沃尔玛-长城分店',
-        //         time: '55分钟',
-        //         distance: '2.5km'
-        //       },
-        //       {
-        //         name: '沃尔玛-王庄分店',
-        //         time: '30分钟',
-        //         distance: '1.0km'
-        //       }
-        //     ]
-        //   },
-        //   {
-        //     name: '沃尔玛-鼓山店',
-        //     logoSrc: '/static/images/walmart.png',
-        //     sales: 459,
-        //     sendPrice: 18,
-        //     basisPrice: 3,
-        //     time: '50分钟',
-        //     distance: '2.5km',
-        //     deliveryName: '达达专送',
-        //     id: 1,
-        //     discountsList: [
-        //       {
-        //         name: '领券',
-        //         title: '免5元运费，满5元免5元运费，满48元免4元运费,认识我那个分解机积分IE见覅偶',
-        //         type: 'lq'
-        //       },
-        //       {
-        //         name: '返券',
-        //         title: '实付满89元订单完成后返20元优惠券(每天1单)',
-        //         type: 'fq'
-        //       },
-        //       {
-        //         name: '满减',
-        //         title: '欧莱雅满88减38，满176减76，满264减114',
-        //         type: 'mj'
-        //       }
-        //     ],
-        //     nearStore: [
-        //       {
-        //         name: '沃尔玛-长城分店',
-        //         time: '55分钟',
-        //         distance: '2.5km'
-        //       },
-        //       {
-        //         name: '沃尔玛-王庄分店',
-        //         time: '30分钟',
-        //         distance: '1.0km'
-        //       }
-        //
-        //     ]
-        //   }]
       }
     },
+    onLoad () {
+      this.num1 = 1
+      this.num = 2
+    },
     methods: {
-      showList: function () {
-        this.num = this.num === 2 ? this.discountsList.length : 2
+      showList: function (index) {
+        this.num = this.num === 2 ? this.merchantList[index].discountsList.length : 2
       },
-      storeList: function () {
-        this.num1 = this.num1 === 1 ? this.nearStore.length : 1
+      storeList: function (index) {
+        this.num1 = this.num1 === 1 ? this.merchantList[index].nearStore.length : 1
       }
-    }
-  }
+    }}
 </script>
 
 <style scoped>
@@ -309,4 +221,9 @@
     font-size: 12px;
     color: #666666;
   }
+
+
+
+
+
 </style>
