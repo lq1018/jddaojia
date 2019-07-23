@@ -1,11 +1,11 @@
 <template>
     <div class="merchant" >
       <div class="content">
-        <div class="left">
+        <div class="left" @click="nextPage(item.id)">
           <img :src="item.logoSrc">
         </div>
         <div class="right">
-          <div class="top">
+          <div class="top" @click="nextPage(item.id)">
             <div class="merchantName">
               {{item.name}}
             </div>
@@ -53,7 +53,8 @@
         num1: 1
       }
     },
-    onLoad () {
+    onLoad (res) {
+      console.log(res.id + 'id')
       this.num1 = 1
       this.num = 2
     },
@@ -63,6 +64,15 @@
       },
       storeList: function (index) {
         this.num1 = this.num1 === 1 ? this.merchantList[index].nearStore.length : 1
+      },
+      nextPage: function (index) {
+        console.log(index + 'index')
+        wx.navigateTo({
+          url: '/pages/MerchantList1/main?' + index,
+          success (res) {
+            // 通过eventChannel向被打开页面传送数据
+          }
+        })
       }
     }}
 </script>

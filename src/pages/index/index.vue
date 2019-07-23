@@ -103,9 +103,8 @@ export default {
     },
     nextPage (index) {
       wx.navigateTo({
-        url: '/pages/FruitsList/main?key=' + index,
+        url: '/pages/MerchantList' + index + '/main?id=' + index,
         success (res) {
-          console.log(index)
         }
       })
     } }}
