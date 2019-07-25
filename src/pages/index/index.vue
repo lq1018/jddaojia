@@ -15,7 +15,7 @@
     <scroll-view scroll-x="true" class="scroll-view_H first-scroll"  style="white-space: nowrap; width: 100%;display: flex;">
       <div class="scroll-view-item_H">
         <ul>
-          <li v-for="(item,index) in goodsItem" @click="nextPage(index)" :key="index">
+          <li v-for="(item,index) in goodsItem" @click="$nextPage('/pages/MerchantList' + index + '/main?id=' + index)" :key="index">
             <img :src="item.imgSrc" alt="">
             <span>{{item.name}}</span>
           </li>
@@ -100,14 +100,15 @@ export default {
           _this.location = res.name
         }
       })
-    },
-    nextPage (index) {
-      wx.navigateTo({
-        url: '/pages/MerchantList' + index + '/main?id=' + index,
-        success (res) {
-        }
-      })
-    } }}
+    }
+    // nextPage (index) {
+    //   wx.navigateTo({
+    //     url: '/pages/MerchantList' + index + '/main?id=' + index,
+    //     success (res) {
+    //     }
+    //   })
+    // }
+  }}
 </script>
 
 <style scoped>

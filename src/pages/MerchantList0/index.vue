@@ -4,7 +4,8 @@
     :merchant-list="merchantList"
      v-for="(item,index) in merchantList"
      :item="item"
-     :key="index"/>
+     :key="index"
+      @nextPage="$nextPage('/pages/storeDetail/main?id=' + index)"/>
   </div>
 </template>
 
@@ -160,8 +161,6 @@
             ]
           }]
       }
-    },
-    methods: {
     }
   }
 </script>

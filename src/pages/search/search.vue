@@ -44,7 +44,6 @@
 </template>
 
 <script>
-  import store from './store'
   export default {
     name: 'search',
     data () {
@@ -75,7 +74,7 @@
     },
     computed: {
       historyItem () {
-        return store.state.historyItem
+        return this.$store.state.historyItem
       }
     },
     methods: {
@@ -100,12 +99,12 @@
         this.currentList = []
         if (val) {
           this.searchVal = val
-          store.commit('addHistoryItem', val)
+          this.$store.commit('addHistoryItem', val)
         }
       },
       //  清除所有搜索历史记录
       clearAllHistory: function () {
-        store.commit('clearAllHistory')
+        this.$store.commit('clearAllHistory')
       }
 
     }

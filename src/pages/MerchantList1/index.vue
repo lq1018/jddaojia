@@ -4,7 +4,8 @@
        :merchant-list="fruitsList"
        v-for="(item,index) in fruitsList"
         :item="item"
-         :key="index"/>
+         :key="index"
+         @nextPage="nextPage(index)"/>
     </div>
 </template>
 
@@ -96,6 +97,13 @@
             ]
           }
         ]
+      }
+    },
+    methods: {
+      nextPage: function (index) {
+        wx.navigateTo({
+          url: '/pages/storeDetail/main?id=' + index
+        })
       }
     }
   }
