@@ -2,7 +2,7 @@
 <div class="wrap">
   <div class="user">
     <div class="userImg">
-      <img :src="userInfo.avatarUrl" alt="">
+      <img :src="userInfo.avatarUrl" alt="头像">
     </div>
     <div class="login" v-if="isLogin===true">
       <div class="userName">{{userInfo.nickName}}</div>
@@ -14,6 +14,16 @@
     <div class="exit">
       <div class="exits" @click="exitLogin">退出</div>
     </div>
+  </div>
+  <div class="countInfo">
+     <ul class="countList">
+       <li>
+         <div class="title">收货地址</div>
+         <div class="detail">
+           <img src="/static/images/right.png" alt="">
+         </div>
+       </li>
+     </ul>
   </div>
 </div>
 </template>
@@ -83,6 +93,27 @@
     border: 1px solid #039EDF;
     padding: 5px 10px;
     color: #66ae5c;
+  }
+  .countInfo{
+    margin-top: 20px;
+  }
+  .countInfo .countList{
+    padding: 0 10px;
+  }
+  .countList li{
+    display: flex;
+    line-height: 60px;
+    justify-content: space-between;
+    border-bottom: 1px solid #cccccc;
+    background-color: #ececec;
+  }
+  .countList li .title{
+    font-size: 14px;
+
+  }
+  .countList li .detail img{
+    width: 20px;
+    height: 20px;
   }
 
 </style>
