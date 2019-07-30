@@ -1,12 +1,14 @@
 {
   "pages": [
-    "pages/newAddress/main",
+    "pages/submit/main",
     "pages/index/main",
     "pages/MerchantList0/main",
     "pages/search/main",
     "pages/logs/main",
     "pages/mycount/main",
+    "pages/newAddress/main",
     "pages/storeDetail/main",
+    "pages/manageAddress/main",
     "pages/MerchantList1/main"
 
   ],
@@ -60,5 +62,7 @@
   "scope.userLocation": {
     "desc": "你的位置信息将用于小程序位置接口的效果展示"
   }
-}
+},
+  "checkSiteMap": false
+
 }

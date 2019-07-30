@@ -25,6 +25,12 @@
       <div class="title">联系电话：</div>
       <input class="addDetail" type="text" name="phone" placeholder="请填写收货人手机号码">
     </li>
+    <li>
+      <div class="title">标签：</div>
+      <div class="lable">
+        <span v-for="(item,index) in labelList" :class="{active : index===isId}" @click="isActive(index)" :key="index">{{item}}</span>
+      </div>
+    </li>
   </ul>
     <div class="saveBtn">
       <button form-type="submit">保存</button>
@@ -41,16 +47,15 @@
     data () {
       return {
         region: ['福建省', '福州市', '晋安区'],
-        customItem: '全部'
+        customItem: '全部',
+        labelList: ['家', '公司', '学校'],
+        isId: ''
       }
     },
     methods: {
       bindRegionChange: function (e) {
         console.log('picker发送选择改变，携带值为', e.mp.detail.value)
         this.region = e.mp.detail.value
-      },
-      sub: function (e) {
-        console.log(e)
       },
       formSubmit: function (e) {
         const arr = e.mp.detail.value
@@ -70,6 +75,9 @@
             content: '请输入详细地址'
           })
         }
+      },
+      isActive: function (index) {
+        this.isId = index
       }
     }
   }
@@ -82,8 +90,12 @@
   .adresList li{
     background-color: #e4e4e4;
     line-height: 60px;
+    height: 60px;
     display: flex;
     justify-content: space-between;
+  }
+  .adresList li:last-child{
+    justify-content: start;
   }
   .adresList li .title{
     font-size: 14px;
@@ -110,5 +122,18 @@
     background-color: #09bb07;
     color: #ffffff;
     font-size: 18px;
+  }
+  .adresList li .lable span{
+    margin-right: 5px;
+    width: 40px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    display: inline-block;
+    border: 1px solid #ffffff;
+  }
+.adresList li .lable span.active{
+    background-color: #66ae5c;
+    color: #ffffff;
   }
 </style>

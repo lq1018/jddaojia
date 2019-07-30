@@ -2,7 +2,8 @@
 <div class="wrap">
   <div class="user">
     <div class="userImg">
-      <img :src="userInfo.avatarUrl" alt="头像">
+      <img :src="userInfo.avatarUrl" v-if="isLogin ===true" alt="头像">
+      <img src="/static/images/userIcon.png" v-if="isLogin ===false" alt="头像">
     </div>
     <div class="login" v-if="isLogin===true">
       <div class="userName">{{userInfo.nickName}}</div>
@@ -17,7 +18,7 @@
   </div>
   <div class="countInfo">
      <ul class="countList">
-       <li>
+       <li @click="$nextPage('/pages/newAddress/main')">
          <div class="title">收货地址</div>
          <div class="detail">
            <img src="/static/images/right.png" alt="">
