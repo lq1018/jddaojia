@@ -54,7 +54,6 @@
       }
     },
     onLoad (res) {
-      console.log(res.id + 'id')
       this.num1 = 1
       this.num = 2
     },

@@ -41,7 +41,11 @@
     },
     data () {
       return {
+        user: null
       }
+    },
+    mounted (e) {
+      console.log(this.user)
     },
     methods: {
       onGetUserInfo: function (e) {
@@ -52,6 +56,9 @@
         this.$store.commit('updateIsLogin', false)
         this.$store.commit('cleanUserInfo')
       }
+    },
+    onLoad () {
+      this.user = getApp().globalData.user
     }
   }
 </script>

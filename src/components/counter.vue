@@ -10,7 +10,6 @@
 
 <script>
   export default {
-    name: 'index',
     data () {
       return {
         num: 1

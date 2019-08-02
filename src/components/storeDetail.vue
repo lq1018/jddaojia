@@ -50,19 +50,26 @@
               </div>
               <div class="goodsPrice">
                 <span>￥{{everyGoods.price}}</span>
-                <img :src="everyGoods.img2" alt="">
+                <div class="counter">
+                  <counter/>
+                </div>
               </div>
             </div>
           </li>
         </ul>
       </div>
     </div>
+    <div class="bottom">
+      <div class="shopCar">购物车</div>
+      <div class="settleCount">结算</div>
+    </div>
   </div>
 </template>
 
 <script>
+  import counter from './counter'
   export default {
-    name: 'index',
+    components: {counter},
     props: ['storeIfo', 'goodsList'],
     data () {
       return {
@@ -246,9 +253,30 @@
   .goodsPrice span{
     color: #f40;
   }
-  .goodsPrice img{
-    width: 30px;
-    height: 30px;
+  .goodsPrice counter{
+    width: 100px;
+  }
+  .wrap .bottom{
+    position: fixed;
+    height: 60px;
+    background-color: #e4e4e4;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .bottom .shopCar {
+    width: 70%;
+    text-align: center;
+    line-height: 60px;
+  }
+  .bottom .settleCount {
+    flex: auto;
+    text-align: center;
+    background-color: #5cb154;
+    color: #ffffff;
+    line-height: 60px;
   }
 
 
