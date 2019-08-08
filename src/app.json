@@ -1,13 +1,15 @@
 {
   "pages": [
-    "pages/storeDetail/main",
+    "pages/loginRejister/main",
     "pages/index/main",
     "pages/mycount/main",
     "pages/MerchantList0/main",
     "pages/search/main",
     "pages/logs/main",
+    "pages/storeDetail/main",
     "pages/newAddress/main",
     "pages/submit/main",
+    "pages/Rejister/main",
     "pages/manageAddress/main",
     "pages/MerchantList1/main"
 

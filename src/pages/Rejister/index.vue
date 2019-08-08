@@ -7,8 +7,8 @@
       <div class="inpBox pwd">
         密码： <input type="password" v-model="pwd">
       </div>
-      <button class="btn" @click.stop="login">登录</button>
-      <div class="goRegister" @click="$nextPage('/pages/Rejister/main')">还没账号？去注册</div>
+      <button class="btn" @click.stop="login">注册</button>
+      <div class="goRegister" @click="$nextPage('/pages/submit/main')">已有账号？去登录</div>
     </div>
   </div>
 </template>
@@ -45,6 +45,7 @@
                 icon: 'success',
                 duration: 2000,
                 success (res) {
+                  console.log(res)
                   wx.switchTab({
                     url: '/pages/mycount/main',
                     success (res) {
@@ -66,7 +67,7 @@
       }
     },
     onShow () {
-      wx.setNavigationBarTitle({title: '登录界面'})
+      wx.setNavigationBarTitle({title: '注册界面'})
     }
   }
 </script>
@@ -100,3 +101,4 @@
   }
 
 </style>
+<

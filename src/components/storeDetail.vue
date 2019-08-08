@@ -37,7 +37,7 @@
       </div>
       <div class="con-right" >
         <ul v-show="openId === index1" v-for="(goods1,index1) in goodsList" :key="index1">
-          <li v-for="(everyGoods,index2) in goods1.goodsDetail" :key="index2">
+          <li v-for="(everyGoods,index2) in goods1.goodsDetail" :key="index2" @click="addEvent(everyGoods.price,index2)">
             <div class="goodsImg">
               <img :src="everyGoods.img1" alt="">
             </div>
@@ -51,7 +51,7 @@
               <div class="goodsPrice">
                 <span>￥{{everyGoods.price}}</span>
                 <div class="counter">
-                  <counter/>
+                  <counter @counterService="counterService"/>
                 </div>
               </div>
             </div>
@@ -60,7 +60,13 @@
       </div>
     </div>
     <div class="bottom">
-      <div class="shopCar">购物车</div>
+      <div class="shopCar">
+         <span class="icon">
+           <img src="/static/images/shopCar.png">
+         </span>
+        <span class="num" v-if="num > 0">{{num}}</span>
+        <span class="totalPrice">{{allPrice}}</span>
+      </div>
       <div class="settleCount">结算</div>
     </div>
   </div>
@@ -75,7 +81,20 @@
       return {
         lock: false,
         lqLock: false,
-        openId: 0
+        openId: 0,
+        num: 0,
+        everyNum: 0,
+        buyGoods: [],
+        total: 0
+      }
+    },
+    computed: {
+      allPrice: function () {
+        for (let i = 0; i < this.buyGoods.length; i++) {
+          if (this.buyGoods[i] === undefined) continue
+          this.total += this.buyGoods[i]
+        }
+        return this.total
       }
     },
     methods: {
@@ -94,7 +113,17 @@
       },
       lqActive: function () {
         this.lqLock = !this.lqLock
+      },
+      counterService: function (num, everyNum) {
+        this.num += num
+        this.everyNum = everyNum
+      },
+      addEvent: function (price, index) {
+        this.buyGoods[index] = price * this.everyNum
       }
+    },
+    onLoad () {
+      this.num = 0
     }
   }
 </script>
@@ -268,8 +297,40 @@
   }
   .bottom .shopCar {
     width: 70%;
-    text-align: center;
     line-height: 60px;
+  }
+  .bottom .shopCar .icon{
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: #5cb154;
+    border-radius: 50%;
+    text-align: center;
+    top: -10px;
+    left: 20px;
+  }
+  .bottom .shopCar .icon img {
+    width: 25px;
+    height: 25px;
+  }
+  .bottom .shopCar .num {
+    position: relative;
+    padding: 3px;
+    border-radius: 50%;
+    background-color: red;
+    color: #ffffff;
+    font-size: 10px;
+    top: -35px;
+    left: 50px;
+  }
+  .bottom .shopCar .totalPrice {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    top: 0px;
+    left: 0px;
+    left: 0px;
+
   }
   .bottom .settleCount {
     flex: auto;

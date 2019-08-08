@@ -22,7 +22,7 @@
                 weight: '500g',
                 sales: 52,
                 evaluate: 61,
-                price: 10.8,
+                price: 9,
                 img2: '/static/images/add.png'
               },
               { img1: '/static/images/grapes.png',
@@ -38,7 +38,7 @@
                 weight: '500g',
                 sales: 52,
                 evaluate: 61,
-                price: 10.8,
+                price: 10,
                 img2: '/static/images/add.png'
               },
               { img1: '/static/images/grapes.png',
@@ -46,7 +46,7 @@
                 weight: '500g',
                 sales: 52,
                 evaluate: 61,
-                price: 10.8,
+                price: 11.99,
                 img2: '/static/images/add.png'
               },
               { img1: '/static/images/grapes.png',

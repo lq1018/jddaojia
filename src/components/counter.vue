@@ -12,15 +12,22 @@
   export default {
     data () {
       return {
-        num: 1
+        num: 0
       }
     },
     methods: {
       numCompute: function (number) {
-        if (this.num === 1 && number === -1) return
+        if (this.num === 0 && number === -1) return
         this.num += Number(number)
-        this.$emit('counteService', this.num)
+        if (number < 0) {
+          this.$emit('counterService', -1, this.num)
+        } else {
+          this.$emit('counterService', 1, this.num)
+        }
       }
+    },
+    onLoad () {
+      this.num = 0
     }
   }
 </script>
