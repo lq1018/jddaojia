@@ -7,7 +7,7 @@
     </div>
     <div class="login" v-if="user">
       <div class="userName">{{user.LiuName}}</div>
-      <div class="userSex">{{user.Password}}</div>
+      <div class="userSex">{{user.Telephone}}</div>
     </div>
     <div class="login" v-if="! user">
       <button class="loginBtn" @click="$nextPage('/pages/loginRejister/main')" >登录/注册</button>
@@ -77,7 +77,7 @@
           },
           {
             title: '收货地址',
-            url: '/pages/newAddress/main'
+            url: '/pages/manageAddress/main'
           },
           {
             title: '意见反馈',
@@ -94,11 +94,10 @@
     methods: {
       exit: function () {
         this.user = !this.user
-        console.log(this.user)
       }
     },
-    onLoad () {
-      this.user = getApp().globalData.user
+    onShow () {
+      this.user = getApp().globalData.$user
     }
   }
 </script>

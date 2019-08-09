@@ -3,3 +3,7 @@ export function nextPage (url) {
     url: url
   })
 }
+export function Entrytel (tel) {
+  let reg = /^(\d{3})\d{4}(\d{4})$/
+  return tel.replace(reg, '$1****$2')
+}

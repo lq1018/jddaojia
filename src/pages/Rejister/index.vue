@@ -4,6 +4,9 @@
       <div class="inpBox account">
         账号： <input type="text" v-model="counter">
       </div>
+      <div class="inpBox">
+        手机：<input type="text" v-model="telephone">
+      </div>
       <div class="inpBox pwd">
         密码： <input type="password" v-model="pwd">
       </div>
@@ -14,13 +17,13 @@
 </template>
 
 <script>
-  const app = getApp()
   export default {
     name: 'index',
     data () {
       return {
         counter: null,
-        pwd: null
+        pwd: null,
+        telephone: null
       }
     },
     methods: {
@@ -30,15 +33,15 @@
           url: 'http://192.168.1.21:8070/WebHandler/LiuUserHandler.ashx',
           method: 'POST',
           data: {
-            type: 'login',
+            type: 'register',
             counter: _this.counter,
-            pwd: _this.pwd
+            pwd: _this.pwd,
+            telephone: _this.telephone
           },
           header: {
             'content-type': 'application/x-www-form-urlencoded'
           },
           success: function (res) {
-            app.globalData.user = res.data.user
             if (res.data.result_state === '2') {
               wx.showToast({
                 title: '登录成功',

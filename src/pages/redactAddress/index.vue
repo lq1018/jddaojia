@@ -1,44 +1,44 @@
 <template>
-<div class="wrap">
-  <form @submit="formSubmit" bindreset="formReset">
-  <ul class="adresList">
-    <li>
-      <div class="title">所在城市:</div>
-      <picker mode="region" @change="bindRegionChange" :value="region" :custom-item="customItem">
-        <view class="picker">
-          {{region[0]}}，{{region[1]}}，{{region[2]}}
-        </view>
-      </picker>
-      <span>
+  <div class="wrap">
+    <form @submit="formSubmit" bindreset="formReset">
+      <ul class="adresList">
+        <li>
+          <div class="title">所在城市:</div>
+          <picker mode="region" @change="bindRegionChange" :value="region" :custom-item="customItem">
+            <view class="picker">
+              {{region[0]}}，{{region[1]}}，{{region[2]}}
+            </view>
+          </picker>
+          <span>
         <img src="/static/images/right.png" alt="">
       </span>
-    </li>
-    <li>
-      <div class="title">详细地址：</div>
-      <input class="addDetail" type="text" name="address" v-model="address" placeholder="具体到哪个街道、镇,小区名和门牌号">
-    </li>
-    <li>
-      <div class="title">收货人：</div>
-      <input class="addDetail" type="text" name="name" v-model="receiver" placeholder="请填写收货人的姓名">
-    </li>
-    <li>
-      <div class="title">联系电话：</div>
-      <input class="addDetail" type="text" name="phone" v-model="telephone" placeholder="请填写收货人手机号码">
-    </li>
-    <li>
-      <div class="title">标签：</div>
-      <div class="lable">
-        <span v-for="(item,index) in labelList" :class="{active : index===isId}" @click="isActive(index)" :key="index">{{item}}</span>
+        </li>
+        <li>
+          <div class="title">详细地址：</div>
+          <input class="addDetail" type="text" name="address" v-model="address" placeholder="具体到哪个街道、镇,小区名和门牌号">
+        </li>
+        <li>
+          <div class="title">收货人：</div>
+          <input class="addDetail" type="text" name="name" v-model="receiver" placeholder="请填写收货人的姓名">
+        </li>
+        <li>
+          <div class="title">联系电话：</div>
+          <input class="addDetail" type="text" name="phone" v-model="telephone" placeholder="请填写收货人手机号码">
+        </li>
+        <li>
+          <div class="title">标签：</div>
+          <div class="lable">
+            <span v-for="(item,index) in labelList" :class="{active : index===isId}" @click="isActive(index)" :key="index">{{item}}</span>
+          </div>
+        </li>
+      </ul>
+      <div class="saveBtn">
+        <button form-type="submit" @click="saveAddress">保存</button>
       </div>
-    </li>
-  </ul>
-    <div class="saveBtn">
-      <button form-type="submit" @click="saveAddress">保存</button>
-    </div>
-  </form>
+    </form>
 
 
-</div>
+  </div>
 </template>
 
 <script>
@@ -52,7 +52,8 @@
         isId: '',
         address: null,
         receiver: null,
-        telephone: null
+        telephone: null,
+        addressId: null
       }
     },
     methods: {
@@ -104,14 +105,35 @@
       isActive: function (index) {
         this.isId = index
       }
+    },
+    onLoad (res) {
+      const _this = this
+      this.addressId = res.AddressId
+      wx.request({
+        url: 'http://192.168.1.21:8070/WebHandler/LiuAddressHandler.ashx',
+        method: 'GET',
+        data: {
+          type: 'getAddress1',
+          addressId: this.addressId
+        },
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        success (res) {
+          let resArry = res.data.theAddress[0]
+          _this.address = resArry.Address
+          _this.receiver = resArry.Receiver
+          _this.telephone = resArry.Telephone
+        }
+      })
     }
   }
 </script>
 
 <style scoped>
-.adresList{
-  padding: 0 6px;
-}
+  .adresList{
+    padding: 0 6px;
+  }
   .adresList li{
     background-color: #e4e4e4;
     line-height: 60px;
@@ -157,7 +179,7 @@
     display: inline-block;
     border: 1px solid #ffffff;
   }
-.adresList li .lable span.active{
+  .adresList li .lable span.active{
     background-color: #66ae5c;
     color: #ffffff;
   }

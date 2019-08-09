@@ -65,7 +65,7 @@
            <img src="/static/images/shopCar.png">
          </span>
         <span class="num" v-if="num > 0">{{num}}</span>
-        <span class="totalPrice">{{allPrice}}</span>
+        <span class="totalPrice">{{totalMoney}}</span>
       </div>
       <div class="settleCount">结算</div>
     </div>
@@ -85,16 +85,9 @@
         num: 0,
         everyNum: 0,
         buyGoods: [],
-        total: 0
-      }
-    },
-    computed: {
-      allPrice: function () {
-        for (let i = 0; i < this.buyGoods.length; i++) {
-          if (this.buyGoods[i] === undefined) continue
-          this.total += this.buyGoods[i]
-        }
-        return this.total
+        len: 0,
+        index: [],
+        totalMoney: 0
       }
     },
     methods: {
@@ -119,7 +112,23 @@
         this.everyNum = everyNum
       },
       addEvent: function (price, index) {
-        this.buyGoods[index] = price * this.everyNum
+        let indexFlag = this.index.findIndex(item => item === index)
+        if (indexFlag === -1) {
+          this.index.push(index)
+          indexFlag = this.index.findIndex(item => item === index)
+          this.buyGoods[indexFlag] = price * this.everyNum
+        } else {
+          this.buyGoods[indexFlag] = price * this.everyNum
+        }
+        this.totalPrice(this.buyGoods)
+      },
+      totalPrice: function (buyGoodsArry) {
+        let len = buyGoodsArry.length
+        this.totalMoney = 0
+        for (let i = 0; i < len; i++) {
+          this.totalMoney += buyGoodsArry[i]
+        }
+        this.totalMoney.toFixed(2)
       }
     },
     onLoad () {

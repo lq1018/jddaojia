@@ -2,18 +2,18 @@
     <div class="wrap">
      <ul class="content">
        <li class="title">我的收获地址</li>
-       <li>
+       <li v-for="(item,index) in addressList" :key="index">
          <div class="left">
            <div class="l-top">
-             <span class="name">刘庆</span>
-             <span class="phone">15112314565</span>
+             <span class="name">{{item.Receiver}}</span>
+             <span class="phone">{{item.Telephone}}</span>
            </div>
            <div class="l-bottom">
-             <span class="site">家</span>
-             <span class="address">福州市晋安区融侨悦城</span>
+             <span class="site">{{item.Laber}}</span>
+             <span class="address">{{item.Address}}</span>
            </div>
          </div>
-         <div class="right">
+         <div class="right" @click="$nextPage('/pages/redactAddress/main?AddressId='+item.LiuAddressId)">
            <img src="/static/images/redact.png">
          </div>
        </li>
@@ -26,7 +26,33 @@
 
 <script>
   export default {
-    name: 'index'
+    name: 'index',
+    data () {
+      return {
+        addressList: []
+      }
+    },
+    methods: {
+    },
+    onShow () {
+      const _this = this
+      wx.request({
+        url: 'http://192.168.1.21:8070/WebHandler/LiuAddressHandler.ashx',
+        method: 'GET',
+        data: {
+          type: 'getAddress',
+          userId: getApp().globalData.$user.LiuUserId
+        },
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        success (res) {
+          _this.addressList = res.data.allAddress
+          console.log(_this.addressList)
+        }
+
+      })
+    }
   }
 </script>
 
@@ -41,6 +67,7 @@
     display: flex;
     justify-content: space-between;
     font-size: 12px;
+    margin-bottom: 10px;
   }
   .content li.title{
     font-size: 16px;

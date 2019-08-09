@@ -38,7 +38,9 @@
             'content-type': 'application/x-www-form-urlencoded'
           },
           success: function (res) {
-            app.globalData.user = res.data.user
+            let user = res.data.user
+            user.Telephone = _this.$entryTel(user.Telephone)
+            app.globalData.$user = user
             if (res.data.result_state === '2') {
               wx.showToast({
                 title: '登录成功',
