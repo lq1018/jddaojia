@@ -57,7 +57,6 @@
     },
     methods: {
       bindRegionChange: function (e) {
-        console.log('picker发送选择改变，携带值为', e.mp.detail.value)
         this.region = e.mp.detail.value
       },
       formSubmit: function (e) {
@@ -95,7 +94,7 @@
               'content-type': 'application/x-www-form-urlencoded'
             },
             success (res) {
-              _this.$nextPage('/pages/manageAddress/main')
+              _this.$backPage('/pages/manageAddress/main')
             }
 
           })

@@ -10,7 +10,7 @@
            </div>
            <div class="l-bottom">
              <span class="site">{{item.Laber}}</span>
-             <span class="address">{{item.Address}}</span>
+             <span class="address">{{addressStr[index]}}</span>
            </div>
          </div>
          <div class="right" @click="$nextPage('/pages/redactAddress/main?AddressId='+item.LiuAddressId)">
@@ -29,7 +29,8 @@
     name: 'index',
     data () {
       return {
-        addressList: []
+        addressList: [],
+        addressStr: []
       }
     },
     methods: {
@@ -49,6 +50,11 @@
         success (res) {
           _this.addressList = res.data.allAddress
           console.log(_this.addressList)
+          for (let i = 0; i < _this.addressList.length; i++) {
+            let province = _this.addressList[i].Province.replace(/(,)/g, '')
+            let address = _this.addressList[i].Address
+            _this.addressStr[i] = province + address
+          }
         }
 
       })

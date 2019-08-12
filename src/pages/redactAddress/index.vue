@@ -33,7 +33,10 @@
         </li>
       </ul>
       <div class="saveBtn">
-        <button form-type="submit" @click="saveAddress">保存</button>
+        <button form-type="submit">保存</button>
+      </div>
+      <div class="deleteAddress" @click="deleteAddress">
+        <span><img src="/static/images/delete.png" alt=""></span>
       </div>
     </form>
 
@@ -84,7 +87,8 @@
             url: 'http://192.168.1.21:8070/WebHandler/LiuAddressHandler.ashx',
             method: 'POST',
             data: {
-              type: 'newAddress',
+              type: 'updateAddress',
+              addressId: this.addressId,
               receiver: this.receiver,
               address: this.address,
               telephone: this.telephone,
@@ -96,7 +100,7 @@
               'content-type': 'application/x-www-form-urlencoded'
             },
             success (res) {
-              _this.$nextPage('/pages/manageAddress/main')
+              _this.$backPage('/pages/manageAddress/main')
             }
 
           })
@@ -104,6 +108,32 @@
       },
       isActive: function (index) {
         this.isId = index
+      },
+      deleteAddress: function () {
+        // 显示模态对话框
+        const _this = this
+        wx.showModal({
+          title: '温馨提示',
+          content: '确定删除该地址吗？',
+          success (res) {
+            if (res.confirm) {
+              wx.request({
+                url: 'http://192.168.1.21:8070/WebHandler/LiuAddressHandler.ashx',
+                method: 'POST',
+                data: {
+                  type: 'deleteAddress',
+                  addressId: _this.addressId
+                },
+                header: {
+                  'content-type': 'application/x-www-form-urlencoded'
+                },
+                success (res) {
+                  _this.$backPage('/pages/manageAddress/main')
+                }
+              })
+            }
+          }
+        })
       }
     },
     onLoad (res) {
@@ -121,9 +151,14 @@
         },
         success (res) {
           let resArry = res.data.theAddress[0]
+          const laber = resArry.Laber
+          _this.isId = _this.labelList.findIndex(item => item === laber)
+          _this.region = resArry.Province.split(',')
+          console.log(_this.region)
           _this.address = resArry.Address
           _this.receiver = resArry.Receiver
           _this.telephone = resArry.Telephone
+          _this.addressId = resArry.LiuAddressId
         }
       })
     }
@@ -182,5 +217,19 @@
   .adresList li .lable span.active{
     background-color: #66ae5c;
     color: #ffffff;
+  }
+  .deleteAddress {
+    margin-top: 20px;
+    text-align: center;
+  }
+  .deleteAddress span {
+    width: 40px;
+    height: 40px;
+    background-color: #f8f8f8;
+    border-radius: 50%;
+  }
+  .deleteAddress span img{
+    width: 30px;
+    height: 30px;
   }
 </style>
