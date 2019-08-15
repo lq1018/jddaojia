@@ -1,7 +1,9 @@
 <template>
   <store-detail
-    :store-ifo="storeIfo"
-    :goods-list="goodsList"/>
+    :store-ifo="merchantlist"
+    :goods-classify="goodsClassify"
+    :goods-list="goodslist"
+    @goodsList="goodsListFun"/>
 </template>
 
 <script>
@@ -685,14 +687,60 @@
             ]
           }
         ],
-        storeIfo: {
-          name: '沃尔玛-鼓山店',
-          logoImg: '/static/images/walmart.png',
-          time: '51分钟',
-          freight: 6
-        }
+        merchantId: null,
+        goodsClassify: [],
+        merchantlist: [],
+        goodsSortId: null,
+        goodslist: []
       }
-    }}
+    },
+    mounted () {
+      this.goodsListFun('1UXSPX3XDKLZP3F3')
+    },
+    methods: {
+      goodsListFun: function (goodsId) {
+        this.goodsSortId = goodsId
+        const _this = this
+        wx.request({
+          url: 'http://192.168.1.21:8070/WebHandler/LiuGetGoodsHandler.ashx',
+          method: 'POST',
+          data: {
+            type: 'GoodsList',
+            goodsSortId: this.goodsSortId
+          },
+          header: {
+            'content-type': 'application/x-www-form-urlencoded'
+          },
+          success (res) {
+            _this.goodslist = res.data.goodslist
+          }
+        })
+      }
+    },
+    onLoad (res) {
+      const _this = this
+      this.merchantId = res.merchantId
+      console.log(res)
+      wx.request({
+        url: 'http://192.168.1.21:8070/WebHandler/LiuGetGoodsHandler.ashx',
+        method: 'POST',
+        data: {
+          type: 'GoodsClassify',
+          merchantId: this.merchantId
+        },
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        success (res) {
+          console.log(res)
+          _this.goodsClassify = res.data.goodsclassify
+          _this.merchantlist = res.data.merchantlist[0]
+        }
+      })
+      console.log(this.merchantlist + 'liu青')
+    }
+
+  }
 </script>
 
 <style>

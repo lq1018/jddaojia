@@ -5,7 +5,7 @@
      v-for="(item,index) in merchantList"
      :item="item"
      :key="index"
-      @nextPage="$nextPage('/pages/storeDetail/main?id=' + index)"/>
+      @nextPage="$nextPage('/pages/storeDetail/main?merchantId=' + item.merchantId)"/>
   </div>
 </template>
 
@@ -18,15 +18,9 @@
       return {
         merchantList: [
           {
-            name: '沃尔玛-鼓山店',
-            logoSrc: '/static/images/walmart.png',
-            sales: 999,
-            sendPrice: 18,
-            basisPrice: 6,
-            time: '45分钟',
-            distance: '2.3km',
-            deliveryName: '达达专送',
             id: 0,
+            sales: 999,
+            deliveryName: '达达专送',
             discountsList: [
               {
                 name: '红包',
@@ -63,15 +57,9 @@
             ]
           },
           {
-            name: '永辉到家-鼓山店',
-            logoSrc: '/static/images/yh.png',
-            sales: 459,
-            sendPrice: 18,
-            basisPrice: 3,
-            time: '50分钟',
-            distance: '2.5km',
-            deliveryName: '达达专送',
             id: 1,
+            sales: 459,
+            deliveryName: '达达专送',
             discountsList: [
               {
                 name: '领券',
@@ -98,15 +86,9 @@
             ]
           },
           {
-            name: '星巴克-王庄店',
-            logoSrc: '/static/images/xbk.png',
-            sales: 565,
-            sendPrice: 0,
-            basisPrice: 4,
-            time: '30分钟',
-            distance: '1.0km',
-            deliveryName: '达达专送',
             id: 2,
+            sales: 565,
+            deliveryName: '达达专送',
             discountsList: [
               {
                 name: '红包',
@@ -121,15 +103,9 @@
             ]
           },
           {
-            name: '知间-鼓山店',
-            logoSrc: '/static/images/zhijian.png',
-            sales: 344,
-            sendPrice: 15,
-            basisPrice: 6,
-            time: '30分钟',
-            distance: '2.5km',
-            deliveryName: '达达专送',
             id: 3,
+            sales: 344,
+            deliveryName: '达达专送',
             discountsList: [
               {
                 name: '红包',
@@ -159,8 +135,38 @@
                 distance: '4.5km'
               }
             ]
-          }]
+          }],
+        merchantSortId: null
       }
+    },
+    onLoad (res) {
+      const _this = this
+      this.merchantSortId = res.MerchantId
+      wx.request({
+        url: 'http://192.168.1.21:8070/WebHandler/LiuGetGoodsHandler.ashx',
+        method: 'POST',
+        data: {
+          type: 'MerchantList',
+          merchantSortId: this.merchantSortId
+        },
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        success (res) {
+          let merchantList = res.data.merchantlist
+          let len = merchantList.length
+          for (let i = 0; i < len; i++) {
+            _this.merchantList[i].name = merchantList[i].MerchantName
+            _this.merchantList[i].logoSrc = merchantList[i].MerchantLogo
+            _this.merchantList[i].time = merchantList[i].DeliveryTime
+            _this.merchantList[i].distance = merchantList[i].Distance
+            _this.merchantList[i].sendPrice = merchantList[i].SendOutPrice
+            _this.merchantList[i].basisPrice = merchantList[i].BasedPrice
+            _this.merchantList[i].merchantId = merchantList[i].MerchantListId
+          }
+          console.log(_this.merchantList[0])
+        }
+      })
     }
   }
 </script>

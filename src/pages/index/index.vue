@@ -15,17 +15,9 @@
     <scroll-view scroll-x="true" class="scroll-view_H first-scroll"  style="white-space: nowrap; width: 100%;display: flex;">
       <div class="scroll-view-item_H">
         <ul>
-          <li v-for="(item,index) in goodsItem" @click="$nextPage('/pages/MerchantList' + index + '/main?id=' + index)" :key="index">
-            <img :src="item.imgSrc" alt="">
-            <span>{{item.name}}</span>
-          </li>
-        </ul>
-      </div>
-      <div class="scroll-view-item_H">
-        <ul>
-          <li>
-            <img src="/static/images/market.png" alt="">
-            <span>超值拼团</span>
+          <li v-for="(item,index) in goodsItem" @click="$nextPage('/pages/MerchantList/main?MerchantId=' + item.MerchantSortId)" :key="index">
+            <img :src="item.SortImg" alt="">
+            <span>{{item.SortName}}</span>
           </li>
         </ul>
       </div>
@@ -71,47 +63,7 @@ export default {
       imgSrc1: '/static/images/location.png',
       imgSrc2: '/static/images/triangle.png',
       imgSrc3: '/static/images/search.png',
-      goodsItem: [
-        {
-          imgSrc: '/static/images/market.png',
-          name: '超市便利'
-        },
-        {
-          imgSrc: '/static/images/fruit.png',
-          name: '新鲜果蔬'
-        },
-        {
-          imgSrc: '/static/images/cake.png',
-          name: '烘焙蛋糕'
-        },
-        {
-          imgSrc: '/static/images/flower.png',
-          name: '鲜花绿植'
-        },
-        {
-          imgSrc: '/static/images/health.png',
-          name: '医药健康'
-        },
-        {
-          imgSrc: '/static/images/market.png',
-          name: '家居时尚'
-        },
-        {
-          imgSrc: '/static/images/dada.png',
-          name: '达达专送'
-        },
-        {
-          imgSrc: '/static/images/market.png',
-          name: '0元抽奖'
-        },
-        {
-          imgSrc: '/static/images/market.png',
-          name: '签到'
-        },
-        {
-          imgSrc: '/static/images/market.png',
-          name: '邀请有礼'
-        }],
+      goodsItem: [],
       imgUrls: [
         '/static/images/swriper1.jpg',
         '/static/images/swiper2.jpg',
@@ -177,7 +129,26 @@ export default {
         }
       })
     }
-  }}
+  },
+  onLoad () {
+    const _this = this
+    wx.request({
+      url: 'http://192.168.1.21:8070/WebHandler/LiuGetGoodsHandler.ashx',
+      method: 'POST',
+      data: {
+        type: 'MerchantClassify'
+      },
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      success (res) {
+        console.log(res.data.merchantSort)
+        _this.goodsItem = res.data.merchantSort
+      }
+    })
+  }
+
+}
 </script>
 
 <style scoped>

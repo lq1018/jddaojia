@@ -2,11 +2,11 @@
   <div class="wrap">
     <div class="top">
       <div class="top-left">
-        <img :src="storeIfo.logoImg" alt="">
+        <img :src="storeIfo.MerchantLogo" alt="">
         <div class="store">
-          <div class="storeName">{{storeIfo.name}}</div>
+          <div class="storeName">{{storeIfo.MerchantName}}</div>
           <div class="storeOther">
-            <span>达达专送-{{storeIfo.time}}</span> | 基础运费{{storeIfo.freight}}元
+            <span>达达专送-{{storeIfo.DeliveryTime}}</span> | 基础运费{{storeIfo.BasedPrice}}元
           </div>
         </div>
       </div>
@@ -33,23 +33,23 @@
     </div>
     <div class="content">
       <div class="con-left">
-        <span v-for="(goods,index) in goodsList" :class="{goodsActive : openId === index}" @click="add(index)" :key="index">{{goods.name}}</span>
+        <span v-for="(goods,index) in goodsClassify" :class="{goodsActive : openId === index}" @click="add(index,goods.GoodsSortId)" :key="index">{{goods.SortName}}</span>
       </div>
       <div class="con-right" >
-        <ul v-show="openId === index1" v-for="(goods1,index1) in goodsList" :key="index1">
-          <li v-for="(everyGoods,index2) in goods1.goodsDetail" :key="index2" @click="addEvent(everyGoods.price,index2)">
+        <ul v-show="openId === index1" v-for="(goods1,index1) in goodsClassify" :key="index1">
+          <li v-for="(everyGoods,index2) in goodsList" :key="index2" @click="addEvent(everyGoods.GoodsPrice,index2)">
             <div class="goodsImg">
-              <img :src="everyGoods.img1" alt="">
+              <img :src="everyGoods.GoodsLogo" alt="">
             </div>
             <div class="goodsDetail">
               <div class="goodsName">
-                {{everyGoods.name}} 约{{everyGoods.weight}}
+                {{everyGoods.GoodsName}}
               </div>
               <div class="goodsSales">
-                月售{{everyGoods.sales}}件 | 好评{{everyGoods.evaluate}}%
+                月售{{everyGoods.GoodsSales}}件 | 好评99%
               </div>
               <div class="goodsPrice">
-                <span>￥{{everyGoods.price}}</span>
+                <span>￥{{everyGoods.GoodsPrice}}</span>
                 <div class="counter">
                   <counter @counterService="counterService"/>
                 </div>
@@ -76,7 +76,7 @@
   import counter from './counter'
   export default {
     components: {counter},
-    props: ['storeIfo', 'goodsList'],
+    props: ['storeIfo', 'goodsClassify', 'goodsList'],
     data () {
       return {
         lock: false,
@@ -87,15 +87,18 @@
         buyGoods: [],
         len: 0,
         index: [],
-        totalMoney: 0
+        totalMoney: 0,
+        goodsSortId: null
       }
     },
     methods: {
       isAcitve: function () {
         this.lock = !this.lock
       },
-      add: function (index) {
+      add: function (index, goodsId) {
         this.openId = index
+        this.goodsSortId = goodsId
+        this.$emit('goodsList', this.goodsSortId)
       },
       searchPage: function () {
         wx.navigateTo({
@@ -111,6 +114,7 @@
         this.num += num
         this.everyNum = everyNum
       },
+      // 计算加入购物车商品的价格和数量
       addEvent: function (price, index) {
         let indexFlag = this.index.findIndex(item => item === index)
         if (indexFlag === -1) {
@@ -239,7 +243,7 @@
   }
   .content .con-left{
     width: 20%;
-    height: 500px;
+    height: 450px;
     overflow: auto;
 
   }
@@ -260,7 +264,7 @@
     width: 80%;
   }
   .con-right ul{
-    height: 500px;
+    height: 450px;
     overflow: auto;
   }
   .con-right li{
