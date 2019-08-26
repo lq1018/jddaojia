@@ -1,18 +1,20 @@
 <template>
   <div class="wrap">
-    <merchant-list
-      :merchant-list="fruitsList"
-      v-for="(item,index) in fruitsList"
-      :item="item"
-      :key="index"
-      @nextPage="nextPage(index)"/>
+    <van-overlay
+      :show="show"
+      @click="show = false"
+    />
+    <van-button
+      type="primary"
+      text="显示遮罩层"
+      @click="show = true"
+    />
   </div>
+
 </template>
 
 <script>
-  import merchantList from '../../components/MerchantList'
   export default {
-    components: {merchantList},
     data () {
       return {
         fruitsList: [
@@ -96,7 +98,8 @@
               }
             ]
           }
-        ]
+        ],
+        show: false
       }
     },
     methods: {
@@ -104,11 +107,17 @@
         wx.navigateTo({
           url: '/pages/storeDetail/main?id=' + index
         })
+      },
+      onClose: function () {
+        this.show = true
       }
     }
   }
 </script>
 
 <style scoped>
-
+.wrap {
+  width: 100%;
+  height: 60px;
+}
 </style>

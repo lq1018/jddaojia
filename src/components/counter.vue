@@ -2,7 +2,7 @@
   <div class="wrap">
     <ul>
       <li class="ub" @click="numCompute(-1)">-</li>
-      <li class="number">{{num}}</li>
+      <li class="number">{{sum}}</li>
       <li class="ub" @click="numCompute(1)">+</li>
     </ul>
   </div>
@@ -10,6 +10,7 @@
 
 <script>
   export default {
+    props: ['number1'],
     data () {
       return {
         num: 0
@@ -20,14 +21,19 @@
         if (this.num === 0 && number === -1) return
         this.num += Number(number)
         if (number < 0) {
-          this.$emit('counterService', -1, this.num)
+          this.$emit('counterService', this.num)
         } else {
-          this.$emit('counterService', 1, this.num)
+          this.$emit('counterService', this.num)
         }
       }
     },
-    onLoad () {
-      this.num = 0
+    computed: {
+      sum () {
+        if (this.number1 || this.number1 === 0) {
+          this.num = this.number1
+        }
+        return this.num
+      }
     }
   }
 </script>

@@ -1,7 +1,7 @@
 <template>
     <div class="wrap">
      <ul class="content">
-       <li class="title">我的收获地址</li>
+       <li class="title">我的收货地址</li>
        <li v-for="(item,index) in addressList" :key="index">
          <div class="left">
            <div class="l-top">
@@ -19,7 +19,7 @@
        </li>
      </ul>
       <div class="btn" @click="$nextPage('/pages/newAddress/main')">
-        新建收获地址
+        新建收货地址
       </div>
     </div>
 </template>
@@ -42,21 +42,22 @@
         method: 'GET',
         data: {
           type: 'getAddress',
-          userId: getApp().globalData.$user.LiuUserId
+          userId: _this.$global.user.LiuUserId
         },
         header: {
           'content-type': 'application/x-www-form-urlencoded'
         },
         success (res) {
           _this.addressList = res.data.allAddress
-          console.log(_this.addressList)
           for (let i = 0; i < _this.addressList.length; i++) {
             let province = _this.addressList[i].Province.replace(/(,)/g, '')
             let address = _this.addressList[i].Address
             _this.addressStr[i] = province + address
           }
+          _this.$global.defaultAddress = _this.addressStr[0]
+          _this.$global.addressname = _this.addressList[0].Receiver
+          _this.$global.addresstel = _this.addressList[0].Telephone
         }
-
       })
     }
   }

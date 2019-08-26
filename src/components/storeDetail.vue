@@ -35,36 +35,23 @@
       <div class="con-left">
         <span v-for="(goods,index) in goodsClassify" :class="{goodsActive : openId === index}" @click="add(index,goods.GoodsSortId)" :key="index">{{goods.SortName}}</span>
       </div>
-      <div class="con-right" >
-        <ul v-show="openId === index1" v-for="(goods1,index1) in goodsClassify" :key="index1">
-          <li v-for="(everyGoods,index2) in goodsList" :key="index2" @click="addEvent(everyGoods.GoodsPrice,index2)">
-            <div class="goodsImg">
-              <img :src="everyGoods.GoodsLogo" alt="">
-            </div>
-            <div class="goodsDetail">
-              <div class="goodsName">
-                {{everyGoods.GoodsName}}
-              </div>
-              <div class="goodsSales">
-                月售{{everyGoods.GoodsSales}}件 | 好评99%
-              </div>
-              <div class="goodsPrice">
-                <span>￥{{everyGoods.GoodsPrice}}</span>
-                <div class="counter">
-                  <counter @counterService="counterService"/>
-                </div>
-              </div>
-            </div>
-          </li>
-        </ul>
+      <div class="con-right">
+          <ul v-show="index1 === openId" v-for="(goods1,index1) in goodsClassify" :key="index1">
+            <li v-for="(everyGoods,index2) in goodsList" :key="index2">
+                <goodslist :everyGoods="everyGoods"
+                           @addShoppingCar1="addShoppingCar1"
+                           :goods-sort-id="goods1.GoodsSortId"/>
+            </li>
+          </ul>
       </div>
     </div>
+<!-- 点击购物车显示页面   -->
     <div class="bottom">
       <div class="shopCar">
          <span class="icon">
            <img src="/static/images/shopCar.png">
          </span>
-        <span class="num" v-if="num > 0">{{num}}</span>
+        <span class="num" v-if="totalNumber > 0">{{totalNumber}}</span>
         <span class="totalPrice">{{totalMoney}}</span>
       </div>
       <div class="settleCount">结算</div>
@@ -74,21 +61,21 @@
 
 <script>
   import counter from './counter'
+  import goodslist from './goodsList'
   export default {
-    components: {counter},
+    components: {counter, goodslist},
     props: ['storeIfo', 'goodsClassify', 'goodsList'],
     data () {
       return {
         lock: false,
         lqLock: false,
         openId: 0,
-        num: 0,
-        everyNum: 0,
-        buyGoods: [],
+        goodsCar: [], // 存储添加的商品的相关信息
         len: 0,
         index: [],
         totalMoney: 0,
-        goodsSortId: null
+        goodsSortId: null,
+        totalNumber: 0
       }
     },
     methods: {
@@ -100,6 +87,9 @@
         this.goodsSortId = goodsId
         this.$emit('goodsList', this.goodsSortId)
       },
+      isShow: function (index) {
+        this.openId = index
+      },
       searchPage: function () {
         wx.navigateTo({
           url: '/pages/search/main',
@@ -110,33 +100,58 @@
       lqActive: function () {
         this.lqLock = !this.lqLock
       },
-      counterService: function (num, everyNum) {
-        this.num += num
-        this.everyNum = everyNum
-      },
-      // 计算加入购物车商品的价格和数量
-      addEvent: function (price, index) {
-        let indexFlag = this.index.findIndex(item => item === index)
-        if (indexFlag === -1) {
-          this.index.push(index)
-          indexFlag = this.index.findIndex(item => item === index)
-          this.buyGoods[indexFlag] = price * this.everyNum
+      addShoppingCar1: function (shoppingGoods) {
+        let id = shoppingGoods.GoodsListId
+        if (shoppingGoods.num > 0) {
+          this.goodsCar.push(shoppingGoods)
+          let obj = {}
+          this.goodsCar = this.goodsCar.reduce((cur, item) => {
+            obj[item.GoodsListId] = obj[item.GoodsListId] ? '' : obj[item.GoodsListId] = true && cur.push(item)
+            return cur
+          }, [])
         } else {
-          this.buyGoods[indexFlag] = price * this.everyNum
+          let index = this.goodsCar.findIndex(item => item.GoodsListId === id)
+          if (index !== -1) {
+            this.goodsCar.splice(index, 1)
+          }
         }
-        this.totalPrice(this.buyGoods)
+        console.log(this.goodsCar)
+        this.totalPrice()
       },
-      totalPrice: function (buyGoodsArry) {
-        let len = buyGoodsArry.length
+      //  计算总价购物车中商品的总价格
+      totalPrice: function () {
         this.totalMoney = 0
+        let len = this.goodsCar.length
+        this.totalNumber = 0
         for (let i = 0; i < len; i++) {
-          this.totalMoney += buyGoodsArry[i]
+          this.totalNumber += this.goodsCar[i].num
+          this.totalMoney += this.goodsCar[i].num * this.goodsCar[i].GoodsPrice
         }
-        this.totalMoney.toFixed(2)
+        this.totalMoney = parseFloat(this.totalMoney).toFixed(2)
       }
     },
-    onLoad () {
-      this.num = 0
+    onShow () {
+      // const id = wx.getStorageSync('goodsId')
+      // const goodsNum = wx.getStorageSync('goodsNum')
+      // if (id && goodsNum > 0) {
+      //   const index = this.shoppingCar.findIndex(item => item.GoodsListId === id)
+      //   if (index === -1) {
+      //     this.shoppingCar.push(this.goodsList.find(item => item.GoodsListId === id))
+      //     const index1 = this.shoppingCar.findIndex(item => item.GoodsListId === id)
+      //     if (index1 !== -1) {
+      //       this.shoppingCar[index1].num = goodsNum
+      //     }
+      //   } else {
+      //     this.shoppingCar[index].num = goodsNum
+      //   }
+      // } else if (id && goodsNum === 0) {
+      //   const index = this.shoppingCar.findIndex(item => item.GoodsListId === id)
+      //   this.shoppingCar.splice(index, 1)
+      // }
+      // console.log(this.shoppingCar)
+      // this.totalPrice()
+      console.log(this.goodsCar)
+      this.totalPrice()
     }
   }
 </script>
@@ -243,7 +258,7 @@
   }
   .content .con-left{
     width: 20%;
-    height: 450px;
+    height: 440px;
     overflow: auto;
 
   }
@@ -263,8 +278,8 @@
   .con-right {
     width: 80%;
   }
-  .con-right ul{
-    height: 450px;
+  .con-right .ul{
+    height: 440px;
     overflow: auto;
   }
   .con-right li{
@@ -272,31 +287,6 @@
     padding: 10px;
     border-bottom: 1px solid #cccccc;
 
-  }
-  .con-right .goodsImg img{
-    width: 60px;
-    height: 60px;
-  }
-  .con-right .goodsDetail{
-    width: calc(100% - 60px);
-  }
-  .goodsDetail .goodsName{
-    font-size: 14px;
-    font-weight: bold;
-  }
-  .goodsDetail .goodsSales{
-    font-size: 10px;
-    color: #666666;
-  }
-  .goodsDetail .goodsPrice{
-    display: flex;
-    justify-content: space-between;
-  }
-  .goodsPrice span{
-    color: #f40;
-  }
-  .goodsPrice counter{
-    width: 100px;
   }
   .wrap .bottom{
     position: fixed;
@@ -343,7 +333,6 @@
     top: 0px;
     left: 0px;
     left: 0px;
-
   }
   .bottom .settleCount {
     flex: auto;
@@ -351,6 +340,10 @@
     background-color: #5cb154;
     color: #ffffff;
     line-height: 60px;
+  }
+  .bot{
+    width:100%;
+    height: 50px;
   }
 
 

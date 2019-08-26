@@ -9,7 +9,7 @@
       <div class="userName">{{user.LiuName}}</div>
       <div class="userSex">{{user.Telephone}}</div>
     </div>
-    <div class="login" v-if="! user">
+    <div class="login" v-if="!user">
       <button class="loginBtn" @click="$nextPage('/pages/loginRejister/main')" >登录/注册</button>
     </div>
   </div>
@@ -26,7 +26,7 @@
   </div>
   <div class="countInfo">
      <ul class="countList">
-       <li @click="$nextPage(item.url)" v-for="(item, index) in countList" :key="index">
+       <li @click="nextPage(item.url)" v-for="(item, index) in countList" :key="index">
          <div class="title">{{item.title}}</div>
          <div class="detail">
            <img src="/static/images/right.png" alt="">
@@ -34,7 +34,7 @@
        </li>
      </ul>
   </div>
-  <div class="exit" v-if="user" @click="exit">
+  <div class="exit" v-if="$global.isLogin" @click="exit">
     退出登录
   </div>
 </div>
@@ -94,10 +94,17 @@
     methods: {
       exit: function () {
         this.user = !this.user
+      },
+      nextPage: function (url) {
+        if (this.$global.isLogin) {
+          this.$nextPage(url)
+        } else {
+          this.$nextPage('/pages/loginRejister/main')
+        }
       }
     },
     onShow () {
-      this.user = getApp().globalData.$user
+      this.user = this.$global.user
     }
   }
 </script>

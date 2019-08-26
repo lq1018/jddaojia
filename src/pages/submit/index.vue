@@ -14,7 +14,6 @@
 </template>
 
 <script>
-  const app = getApp()
   export default {
     name: 'index',
     data () {
@@ -40,7 +39,8 @@
           success: function (res) {
             let user = res.data.user
             user.Telephone = _this.$entryTel(user.Telephone)
-            app.globalData.$user = user
+            _this.$global.user = user
+            _this.$global.isLogin = true
             if (res.data.result_state === '2') {
               wx.showToast({
                 title: '登录成功',
